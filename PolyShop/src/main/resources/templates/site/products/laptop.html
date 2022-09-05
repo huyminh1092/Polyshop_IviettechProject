@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>      
+    <div class="category" layout:fragment="content">
+        <div class="col-10 offset-1">
+         <div class="mb-4">
+             <a class="home-page-link" th:href="@{/home}">Trang chủ</a> / 
+             <a class="extra-page-link" th:href="@{/laptop}">Laptop</a>
+         </div>
+           <div class="card">
+               <div class="card-header">
+                   <div class="row" style="align-items: center;">
+                       <h3 class="ml-4 mr-2">Laptop</h3>
+                       <span class="nums-sp">([[${totalProducts}]] sản phẩm)</span>
+                   </div>
+               </div>
+               <div class="card-body">
+                 <div class="row">
+                     <div class="col-2">
+                         <a th:href="@{/brand/macbook/1}"><img src="/polyshop/images/brand/apple.webp" alt=""></a>
+                     </div>
+                     <div class="col-2">
+                         <a th:href="@{/brand/acer/1}"><img src="/polyshop/images/brand/acer.webp" alt=""></a>
+                     </div>
+                     <div class="col-2">
+                         <a th:href="@{/brand/dell/1}"><img src="/polyshop/images/brand/dell.webp" alt=""></a>
+                     </div>
+                     <div class="col-2">
+                         <a th:href="@{/brand/lenovo/1}"><img src="/polyshop/images/brand/lenovo.webp" alt=""></a>
+                     </div>
+                     <div class="col-2">
+                         <a th:href="@{/brand/hp/1}"><img src="/polyshop/images/brand/hp.webp" alt=""></a>
+                     </div>
+                     <div class="col-2">
+                         <a th:href="@{/brand/asus/1}"><img src="/polyshop/images/brand/asus.webp" alt=""></a>
+                     </div>
+                 </div>
+               </div>
+           </div>
+    
+           <div class="row no-gutters mt-5" style="justify-content: space-between;">
+             <h4 style="color: #cd1817;">Sản phẩm nổi bật</h4>
+             <form action="">
+                <div class="form-inline">
+                    <label for="size" class="mr-3"><h6>Hiển thị: </h6></label>
+                    <select name="size" id="size" class="form-control" 
+                        onchange="this.form.submit()">
+                        <option th:selected="${laptopPage.size == 8}" value="8">8</option>
+                        <option th:selected="${laptopPage.size == 12}" value="12">12</option>
+                        <option th:selected="${laptopPage.size == 24}" value="24">24</option>
+                        <option th:selected="${laptopPage.size == 36}" value="36">36</option>
+                        <option th:selected="${laptopPage.size == 40}" value="40">40</option>
+                    </select>
+                    <label class="ml-3"><h6>Sản phẩm</h6></label>
+                </div>
+            </form>
+           </div>
+           <hr>
+    
+           <!-- content -->
+           <div class="mobile-content">
+             <div class="row mt-3 mb-3">
+                 <div class="col-md-3 wrap-content" th:each="item, isStat : ${laptopPage}">
+                     <div class="card wrap-category-content">
+                         <a th:href="@{'/detail/' + ${item.productId}}" class="card-header wrap-trend-content__img"
+                             style="border: none;">
+                             <img th:src="@{${'/upload/' + item.image}}" alt="">
+                         </a>
+                         <div class="card-body">
+                             <div class="wrap-trend-content__name">
+                                 <a th:href="@{'/detail/' + ${item.productId}}" th:text="${item.name}"></a>
+                             </div>
+                             <div class="row" style="align-items: center;">
+                                 <div class="wrap-trend-content__price col-8">
+                                     <h5> [[${#numbers.formatDecimal(item.unitPrice, 0, 'POINT', 0, 'POINT')}]] 
+                                        <span class="vnd"> đ</span></h5>
+                                 </div>
+                                 <div class="price-discount col-4">
+                                    <p>-<span th:text="${#numbers.formatDecimal(item.discount, 1, 0)}"></span>%</p>
+                                 </div>
+                             </div>
+                             <div class="star mt-2">
+                                 <h5>4.1 <i class="fa-solid fa-star"></i></h5>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 
+             </div>
+         </div>
+             <section aria-label="Page navigation" th:if="${laptopPage.totalPages > 0}">
+                <ul class="pagination justify-content-center">
+                    <li th:class="${1 == laptopPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/laptop(size=${laptopPage.size}, page=${1})}" class="page-link">First</a>
+                    </li>
+                    
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" 
+                        th:if="${laptopPage.totalPages > 1}"
+                        th:class = "${pageNumber == laptopPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/laptop(size=${laptopPage.size}, page=${pageNumber})}" class="page-link"
+                        th:text="${pageNumber}" ></a>
+                    </li>
+                    
+                    <li th:class="${laptopPage.totalPages == laptopPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/laptop(size=${laptopPage.size}, page=${laptopPage.totalPages})}" class="page-link">Last</a>
+                    </li>
+                    </ul>
+             </section>
+        </div>
+        <hr>
+    </div>
+</body>
+
+</html>

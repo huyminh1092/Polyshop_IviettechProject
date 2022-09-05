@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{admin/dashboardLayout.html}">
+
+<head>
+</head>
+
+<body>      
+            <!-- list-account -->
+            <div class="list-account" layout:fragment="content">
+                <h2>Danh sách danh mục</h2>
+                <hr>
+                <a th:href="@{/admin/account/add}" class="btn btn-dark ml-3">Cập nhật</a>
+                <div th:if="${message != null}" class="alert alert-success mt-3" role="alert">
+                    <i>[[${message}]]</i>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger mt-3" role="alert">
+                    <i>[[${error}]]</i>
+                </div>
+                <div th:if="${!accountPage.hasContent()}" class="alert alert-danger mt-3" role="alert">
+                    <i>Tên người dùng không tồn tại</i>
+                </div>
+
+                <form th:action="@{/admin/account}" class="col-10 mb-3 mt-5">
+                    <div class="row">
+                        <input type="text" class="form-control col-8" 
+                        name="name" placeholder="Tên người dùng">
+                        <button class="btn btn-primary">Tìm kiếm</button>
+                    </div>
+                </form>
+                <table class="table table-bordered table-striped" th:if="${accountPage.hasContent()}">
+                    <thead>
+                        <tr>
+                            <th>Tên đăng nhập</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Điện thoại</th>
+                            <th>Vai trò</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody-list-product">
+                        <tr th:each="item, isStat : ${accountPage.content}">
+                            <td>[[${item.username}]]</td>
+                            <td th:text="${item.name}"></td>
+                            <td th:text="${item.email}"></td>
+                            <td th:text="${item.phone}"></td>
+                            <td th:text="${item.role} == false ? 'Người dùng' : 'Quản lý'"></td>
+                            <td>
+                            
+                                <a th:href="@{'/admin/account/edit/' + ${item.username}}" class="btn btn-outline-info ml-3"><i
+                                        class="fa-solid fa-pen-to-square"></i></a>
+                                <a  th:data-id="${item.username}" 
+                                    th:data-name="${item.name}"
+                                    onclick="showConfirmModalDialogAccount1(this.getAttribute('data-id'), this.getAttribute('data-name'))" 
+                                    class="btn btn-outline-danger ml-3"><i
+                                    class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <script>
+                    function showConfirmModalDialogAccount1(id, name) {
+                        $('#fullname').text(name);
+                        $('#yesOption').attr('href', '/polyshop/admin/account/delete/' + id);
+                        $('#confirmDeleteAccount').modal('show');
+                    }
+                </script>
+        
+                <!-- modal -->
+                <div class="modal fade" id="confirmDeleteAccount" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Xác nhận thông tin</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Bạn muốn xóa tài khoản "<strong id="fullname"></strong>"?
+                        </div>
+                        <div class="modal-footer">
+                            <a id="yesOption" type="button" class="btn btn-danger">Xóa</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                <form action="">
+                    <div class="form-inline float-left">
+                        <label for="size" class="mr-3">Page Size: </label>
+                        <select name="size" id="size" class="form-control" 
+                            onchange="this.form.submit()">
+                            <option th:selected="${accountPage.size == 5}" value="5">5</option>
+                            <option th:selected="${accountPage.size == 10}" value="10">10</option>
+                            <option th:selected="${accountPage.size == 15}" value="15">15</option>
+                            <option th:selected="${accountPage.size == 20}" value="20">20</option>
+                            <option th:selected="${accountPage.size == 30}" value="30">30</option>
+                        </select>
+                    </div>
+                </form>
+                
+                    <nav aria-label="Page navigation" 
+                    th:if="${accountPage.totalPages > 0}">
+                    <ul class="pagination justify-content-center">
+                    <li th:class="${1 == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/admin/account(name=${name}, size=${accountPage.size}, page=${1})}" class="page-link">First</a>
+                    </li>
+                    
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}" 
+                        th:if="${accountPage.totalPages > 1}"
+                        th:class = "${pageNumber == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/admin/account(name=${name}, size=${accountPage.size}, page=${pageNumber})}" class="page-link"
+                        th:text="${pageNumber}" ></a>
+                    </li>
+                    
+                    <li th:class="${accountPage.totalPages == accountPage.number + 1} ? 'page-item active' : 'page-item'">
+                        <a th:href="@{/admin/account(name=${name}, size=${accountPage.size}, page=${accountPage.totalPages})}" class="page-link">Last</a>
+                    </li>
+                    </ul>
+                </nav>
+            </div>
+</body>
+
+</html>

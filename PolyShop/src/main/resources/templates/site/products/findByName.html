@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+
+    <div class="find-by-name mt-4" layout:fragment="content">
+        <div class="col-10 offset-1">
+            <div th:if="${errorSearch != null}">
+                <h5 style="opacity: 0.9; text-align: center; margin-top: 100px;">
+                    Không tìm thấy kết quả với từ khóa <strong>"[[${errorSearch}]]"</strong></h5>
+                <div style="text-align: center;"><a th:href="@{/home}" class="mt-3 mb-5 btn btn-danger">
+                        <i class="fa-solid fa-rotate-left"></i> Trở lại trang chủ</a></div>
+            </div>
+
+            <div th:if="${successSearch != null}">
+                <h5 style="opacity: 0.9;">
+                    Tìm thấy <strong>[[${totalResult}]]</strong> kết quả với từ khóa <strong>"[[${successSearch}]]"</strong></h5>
+                <hr>
+    
+                <div class="mobile-content">
+                    <div class="row mt-3 mb-3">
+                        <div class="col-md-3 wrap-content" th:each="item : ${listSearch}">
+                            <div class="card wrap-category-content">
+                                <a th:href="@{'/detail/' + ${item.productId}}" class="card-header wrap-trend-content__img" style="border: none;">
+                                    <img th:src="@{${'/upload/' + item.image}}" alt="">
+                                </a>
+                                <div class="card-body">
+                                    <div class="wrap-trend-content__name">
+                                        <a th:href="@{'/detail/' + ${item.productId}}">[[${item.name}]]</a>
+                                    </div>
+                                    <div class="row" style="align-items: center;">
+                                        <div class="wrap-trend-content__price col-8">
+                                            <h5> [[${#numbers.formatDecimal(item.unitPrice, 0, 'POINT', 0, 'POINT')}]] 
+                                                <span class="vnd"> đ</span></h5>
+                                        </div>
+                                        <div class="price-discount col-4">
+                                            <p>-<span th:text="${#numbers.formatDecimal(item.discount, 1, 0)}"></span>%</p>
+                                        </div>
+                                    </div>
+                                    <div class="star mt-2">
+                                        <h5>4.1 <i class="fa-solid fa-star"></i></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+</body>
+
+</html>

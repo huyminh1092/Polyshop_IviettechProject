@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+    
+    <div class="register-page" layout:fragment="content">
+        <div class="offset-1 mb-4">
+            <a class="home-page-link" th:href="@{/home}">Trang chủ</a> / 
+            <a class="extra-page-link" th:href="@{/register}">Đăng ký</a>
+        </div>
+        <div class="col-8 offset-2">
+            <h3 class="mb-4">Tạo tài khoản PolyShop</h3>
+            <form th:action="@{/register}" class="form-register" 
+                method="post" th:object="${account}">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" 
+                                placeholder="Tên đăng nhập" th:field="*{username}">
+                                <small th:if="${#fields.hasErrors('username')}">
+					                Tên đăng nhập phải chứa ít nhất 6 ký tự
+				                </small>
+                                <small th:if="${errorUsername != null}">
+                                    [[${errorUsername}]]
+                                </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" 
+                                placeholder="Mật khẩu" th:field="*{password}">
+                                <small th:if="${#fields.hasErrors('password')}">
+                                    Mật khẩu phải chứa ít nhất 6 ký tự
+                                </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Họ tên</label>
+                            <input type="text" class="form-control" id="fullname" 
+                                placeholder="Họ và tên" th:field="*{name}">
+                                <small th:if="${#fields.hasErrors('name')}">
+                                    Họ tên phải chứa ít nhất 5 ký tự
+                                </small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" 
+                                placeholder="Email" th:field="*{email}">
+                                <small th:if="${#fields.hasErrors('email')}">
+                                    Email không đúng định dạng
+                                </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Điện thoại</label>
+                            <input type="text" class="form-control" id="phone" 
+                                placeholder="Số điện thoại" th:field="*{phone}">
+                                <small th:if="${#fields.hasErrors('phone')}">
+                                    Số điện thoại không đúng định dạng
+                                </small>
+                        </div>
+                        <button class="btn btn-danger" style="width: 100%;">Đăng ký</button>
+                    </div>
+                </div>
+                <hr>
+                    <p class="text-center">Bạn đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

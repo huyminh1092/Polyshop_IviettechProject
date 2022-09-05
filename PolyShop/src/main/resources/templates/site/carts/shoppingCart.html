@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+   
+    <div class="cart mb-5" layout:fragment="content">
+
+        <div th:if="${cartItemsEmpty != null}" class="text-center" style="height: 400px; padding-top: 100px;">
+            <i class="fa-solid fa-cart-shopping" style="font-size: 50px; color: crimson;"></i>
+            <h5 class="mt-3">Bạn chưa chọn sản phẩm nào !</h5>
+            <a th:href="@{/home}" class="btn btn-outline-primary mt-3" style="padding: 10px 100px 15px; font-size: 20px; font-weight: 600;">
+                Quay lại trang chủ</a>
+                <a th:href="@{/order/purchased}" class="btn btn-outline-warning mt-3" style="padding: 10px 100px 15px; font-size: 20px; font-weight: 600;">
+                Đơn hàng đã mua</a>
+        </div>
+
+        <div th:if="${cartItemsEmpty == null}" class="col-10 offset-1">
+            <div class="mb-4">
+                <a class="home-page-link" th:href="@{/home}">Trang chủ</a> /
+                <a class="extra-page-link" th:href="@{/cart}">Giỏ hàng</a>
+            </div>
+            <div class="row no-gutters" style="align-items: flex-end; padding-left:20px;">
+                <a th:href="@{/home}" class="btn btn-primary">
+                    <i class="fa-solid fa-arrow-left"></i> Mua thêm sản phẩm khác</a>
+                    <a th:href="@{/order/purchased}" class="btn btn-warning">
+                    <i class="fa-solid fa-arrow-right"></i> Đơn hàng đã mua</a>
+                    <br>
+                <h5>Giỏ hàng của bạn</h5>
+            </div>
+    
+            <table class="mt-3 table table-bordered table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá tiền</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr th:each="item : ${cartItems}">
+                        <form th:action="@{/cart/update}" method="post">
+                            <td style="width:  70px;">1</td>
+                            <td class="td-img" style="width: 200px;">
+                                <img th:src="@{${'/upload/' + item.image}}" alt="">
+                            </td>
+                            <td class="td-name">
+                                [[${item.name}]]
+                            </td>
+                            <td class="td-unit">
+                                [[${#numbers.formatDecimal(item.unitPrice, 0, 'POINT', 0, 'POINT')}]] 
+                                <span class="vnd">Ä‘</span>
+                            </td>
+                            <td style="width: 100px;">
+                                <input type="hidden" name="productId" th:value="${item.productId}">
+                                <input type="number" name="quantity" class="form-control" min="1" 
+                                    th:value="${item.quantity}" onblur="this.form.submit()">
+                            </td>
+                            <td class="td-price">
+                                [[${#numbers.formatDecimal(item.intoMoney, 0, 'POINT', 0, 'POINT')}]] 
+                                 <span class="vnd">Ä‘</span>
+                            </td>
+                            <td style="width: 100px;">
+                                <a th:href="@{'/cart/remove/' + ${item.productId}}"
+                                    class="btn btn-outline-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <td colspan="7" class="td-total">Tổng tiền thanh toán: 
+                            <span class="amount">[[${#numbers.formatDecimal(total, 0, 'POINT', 0, 'POINT')}]] 
+                                <span class="vnd"> Ä‘</span></span> </td>
+                    </tr>
+                </tbody>
+            </table>
+            <form th:action="@{/order/checkout}" class="mt-5" method="post">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="address"><h6>Thanh pho</h6></label>
+                            <textarea name="city" id="city" placeholder="Nhập vào thành phố" rows="2" class="form-control"></textarea>
+                            <small th:text="${errorAddress}"></small>
+                        </div>
+                    </div>
+                      <div class="col-6">
+                        <div class="form-group">
+                            <label for="note"><h6>Huyen/Quan</h6></label>
+                            <textarea name="province" id="province" placeholder="Nhập vào huyện/quận" rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                      <div class="col-6">
+                        <div class="form-group">
+                            <label for="note"><h6>Chi tiet dia chi</h6></label>
+                            <textarea name="address" id="address" placeholder="Nhập vào địa chỉ cụ thể" rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="note"><h6>Số điện thoại</h6></label>
+                            <textarea name="phone" id="phone" placeholder="Nhập vào địa chỉ cụ thể" rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="note"><h6>Ghi chu</h6></label>
+                            <textarea name="note" id="note" placeholder="Lời nhắn của bạn" rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-right">
+                    <h5> Tổng thành tiền ([[${noOfItems}]] sản phẩm): <span style="color: crimson;">[[${#numbers.formatDecimal(total, 0, 'POINT', 0, 'POINT')}]] 
+                        <span class="vnd"> Ä‘</span></span></h5>
+                </div>
+                <button style="padding: 10px 30px 7px;" class="offset-5 btn btn-danger mt-5">
+                    <h5>Hoàn tất đặt hàng</h5></button>
+            </form>
+        </div>
+    </div>
+    <hr>
+
+</body>
+
+</html>

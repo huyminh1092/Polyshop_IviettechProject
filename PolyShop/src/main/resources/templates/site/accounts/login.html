@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+    <div class="register-page" layout:fragment="content">
+        <div class="offset-1 mb-4">
+            <a class="home-page-link" href="">Trang chủ</a> / <a class="extra-page-link" href="">Đăng nhập</a>
+        </div>
+        <div class="col-8 offset-2">
+            <h3 class="mb-4">Đăng nhập tài khoản PolyShop</h3>
+            <form th:action="@{/login}" class="form-register"
+                method="post" th:object="${account}">
+                <div class="row">
+                    <div class="col-6 text-center">
+                        <img src="/polyshop/images/logo.png" width="150px"> <br>
+                        <h2 style="color: #cd1817; font-weight: 700;">PolyShop</h2><br>
+                        <h5>Giá trị tích lũy niềm tin</h5>
+                    </div>
+                    <div class="col-6">
+                        <div th:if="${error != null}" class="alert alert-danger" role="alert">
+                            <i>[[${error}]]</i>
+                        </div>
+                        <div th:if="${message != null}" class="alert alert-success" role="alert">
+                            <i>[[${message}]]</i>
+                        </div>
+                        <div th:if="${session.errorLogin != null && error == null}" class="alert alert-danger" role="alert">
+                            <i>[[${session.errorLogin}]]</i>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username"
+                                th:field="*{username}">
+                            <small th:if="${#fields.hasErrors('username')}">
+                                Tên đăng nhập không được để trống!
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Mật khẩu</label>
+                            <input type="password" class="form-control" id="username"
+                                th:field="*{password}">
+                            <small th:if="${#fields.hasErrors('password')}">
+                                Mật khẩu không được để trống!
+                            </small>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input"
+                                     id="exampleCheck1" th:field="*{remember}" value="false">
+                                    <label class="form-check-label" for="exampleCheck1">Ghi nhớ tài khoản?</label>
+                                </div>
+                            </div>
+                            <div class="col-6" style="text-align:  right;">
+                                <a th:href="@{/forgot}">Quên mật khẩu?</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger"
+                            style="margin-top: 0; width: 100%; padding: 10px 0; font-size: 18px; font-weight: 600;">
+                            Đăng nhập</button>
+                    </div>
+                </div>
+                <hr>
+                <p class="text-center">Bạn chưa có tài khoản? <a href="">Đăng ký</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

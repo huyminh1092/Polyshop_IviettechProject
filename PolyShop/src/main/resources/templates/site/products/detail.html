@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+
+	<div class="detail-product" layout:fragment="content">
+		<div class="col-10 offset-1">
+			<div class="mb-4">
+				<a class="home-page-link" th:href="@{/home}">Trang chủ</a> / <a
+					class="extra-page-link"
+					th:href="@{'/detail/' + ${product.productId}}">Chi tiết sản
+					phẩm</a>
+			</div>
+			<div class="row no-gutters"
+				style="align-items: center; justify-content: space-between;">
+				<h3 th:text="${product.name}"></h3>
+				<p style="color: #ea9d02;">
+					<i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i
+						class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i
+						class="fa-solid fa-star"></i> <span
+						style="color: #0168fa; font-size: 15px;">50 đánh giá</span>
+				</p>
+			</div>
+			<hr>
+			<div class="row no-gutters">
+				<div class="col-5">
+					<img th:src="@{${'/upload/' + product.image}}"
+						class="img-thumbnail mt-5" width="100%">
+				</div>
+				<div class="col-6 offset-1">
+					<div class="row no-gutters"
+						style="align-items: flex-end; justify-content: space-between;">
+						<div class="row" style="align-items: flex-end;">
+							<h2 style="color: #cd1817; margin-bottom: 0;">
+								[[${#numbers.formatDecimal(product.unitPrice, 0, 'POINT', 0,
+								'POINT')}]] <span class="vnd">Ä‘</span>
+							</h2>
+							<h5 class="ml-3" style="color: gray;">
+								<strike>[[${#numbers.formatDecimal(product.unitPrice +
+									((product.discount / 100) * product.unitPrice), 0, 'POINT', 0,
+									'POINT')}]] <span class="vnd">Đ</span>
+								</strike>
+							</h5>
+						</div>
+
+						<p style="margin-bottom: 0;">
+							Trả góp theo tháng <br> <strong>2.030.000<span
+								class="vnd">Đ</span></strong>/tháng
+						</p>
+					</div>
+					<hr>
+
+					<div class="row">
+						<h4 class="mt-1">Thông tin sản phẩm</h4>
+						<table class="mt-1 table table-striped">
+							<tbody>
+								<tr>
+									<td>Màn hình</td>
+									<td>6.1 inch, OLED, Super Retina XDR, 2532 x 1170 Pixels</td>
+								</tr>
+								<tr>
+									<td>RAM</td>
+									<td>8 GB, DDR4, 2933 MHz</td>
+								</tr>
+								<tr>
+									<td>Dung lượng</td>
+									<td>SSD 512 GB</td>
+								</tr>
+								<tr>
+									<td>CPU</td>
+									<td>Intel, Core i5, 10300H</td>
+								</tr>
+								<tr>
+									<td>Hệ điều hành</td>
+									<td>Windows 11</td>
+								</tr>
+								<tr>
+									<td>Trọng lượng</td>
+									<td>2.3 kg</td>
+								</tr>
+								<tr>
+									<td>Kích thước</td>
+									<td>359 x 256 x 24.9 mm</td>
+								</tr>
+								<tr>
+									<td>Xuất xứ</td>
+									<td>Trung Quốc</td>
+								</tr>
+								<tr>
+									<td>Năm ra mắt</td>
+									<td>2021</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<a class="btn btn-danger"
+							th:href="@{'/cart/add/' + ${product.productId}}"
+							style="width: 100%; padding: 15px;"><h4>Thêm vào giỏ
+								hàng</h4> </a>
+					</div>
+				</div>
+			</div>
+			<div class="row no-gutters mt-5 mb-3">
+				<h3>Mô tả sản phẩm</h3>
+				<h5 style="line-height: 30px; font-weight: 400;">
+					[[${product.description}]]</h5>
+			</div>
+			<hr>
+			<!--  comment -->
+			<br>
+
+			<div class="d-flex left-content-center row"
+				style="overflow-x: hidden; overflow-y: scroll; height: 480px;">
+				<div class="d-flex flex-column col-md-8">
+					<h3>Write your comment</h3>
+					<div class="coment-bottom bg-white p-2 px-4">
+						<form th:action="@{/product/comment}" method="post"
+							style="width: 800px;">
+							<div class="d-flex flex-row add-comment-section mt-4 mb-4">
+
+								<img class="img-fluid img-responsive rounded-circle mr-2"
+									src="https://i.imgur.com/qdiP4DB.jpg" width="38"><input
+									type="text" name="comment" class="form-control mr-3"
+									placeholder="Add comment">
+								<button class="btn btn-primary" type="submit">Comment</button>
+							</div>
+						</form>
+                       <br>
+
+						<!-- <div class="row">
+							<div class="col" > -->
+								<div class="commented-section mt-2" th:each="item : ${lscomment}">
+									<div class="d-flex flex-row align-items-center commented-user">
+										<h5 class="mr-2">[[${item.account.username}]]</h5>
+										<span class="dot mb-1"></span><span class="mb-1 ml-2">[[${item.date}]]</span>
+									</div>
+									<div class="comment-text-sm">
+										<span>[[${item.content}]]</span>
+									</div>
+									<br>
+
+								</div>
+							<!-- </div>
+						</div> -->
+
+					</div>
+				</div>
+
+			</div>
+
+			<br>
+			<!--  comment -->
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/dashboardLayout.html}">
+
+<head>
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+        <!-- <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" /> -->
+        <!-- <h2>Báo cáo & Thống kê</h2>
+        <hr> -->
+        <hr>
+        <a th:href="@{/admin/statistical}" class="btn btn-primary">Doanh thu theo tháng</a>
+        <a th:href="@{/admin/selling}" class="ml-3 btn btn-warning">Sản phẩm bán chạy</a>
+        <a th:href="@{/admin/stock}" class="ml-3 btn btn-danger">Hàng tồn kho</a>
+        <hr>
+
+        <h2 class="mt-3" style="color: crimson;">Thống kê doanh thu theo tháng</h2>
+        <hr>
+        <div id="container" class="mt-3"
+			style="width: 100%; height: 500px; margin: 0 auto"></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script th:inline="javascript">
+            $(function () {
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Tổng doanh thu theo tháng trong năm 2022'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: [[${map.keySet()}]],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        max: 500000000,
+                        title: {
+                            text: 'Doanh thu theo tháng [in Milion]'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.0f} đ</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Doanh thu',
+                        data: [[${map.values()}]]
+                        // [[${#numbers.formatDecimal(map.values(), 0, 'POINT', 0, 'POINT')}]] 
+                    }]
+                });
+            });
+        </script>
+    </div>
+
+</body>
+
+</html>

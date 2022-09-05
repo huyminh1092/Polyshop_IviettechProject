@@ -1,0 +1,73 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+
+        <div th:if="${ordersEmpty != null}" class="text-center" style="height: 400px; padding-top: 100px;">
+            <i class="fa-solid fa-file-invoice" style="font-size: 50px; color: crimson;"></i>
+            <h5 class="mt-3">Bạn hiện chưa có đơn hàng nào!</h5>
+            <a th:href="@{/home}" class="btn btn-outline-primary mt-3"
+                style="padding: 10px 100px 15px; font-size: 20px; font-weight: 600;">
+                Quay lại trang chủ</a>
+        </div> 
+
+     <div th:if="${ordersEmpty == null}" class="cart mb-5"> 
+            <div class="col-10 offset-1">
+                <div class="mb-4">
+                    <a class="home-page-link" th:href="@{/home}">Trang chủ</a> /
+                    <a class="extra-page-link" th:href="@{/order/customer}">Hóa đơn</a>
+                </div>
+                <div class="row no-gutters" style="align-items: flex-end; justify-content: space-between;">
+                    <a th:href="@{/home}" class="btn btn-primary">
+                        <i class="fa-solid fa-arrow-left"></i> Tiếp tục mua sắm</a>
+                    <h5>Danh sách đơn hàng của bạn</h5>
+                </div>
+
+                <table class="mt-4 table table-bordered table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Họ tên khách hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Địa chỉ</th>
+                            <th>Thanh toán</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                            <th>Xem chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="item, state : ${listOrdersCustomer}">
+                            <td>[[${state.index + 1}]]</td> 
+                            <td th:text="${item.group.name}"></td>
+                            <td th:text="${#dates.format(item.group.orderDate, 'dd-MM-yyyy')}"></td>
+                             <td th:text="${item.group.address.district}"></td> 
+                            <td th:text="${item.group.statusCheckout} == false ? 'Chưa thanh toán' : 'Đã thanh toán'"></td>
+                            <td th:switch="${item.group.status}"> 
+                                <span th:case="0">Đang xử lý</span>
+                                <span th:case="1">Đang vận chuyển</span>
+                                <span th:case="2">Đã giao</span>
+                            </td> 
+                            <td>[[${#numbers.formatDecimal(item.tongTien, 0, 'POINT', 0, 'POINT')}]] đ</td>
+                            <td>
+                                <a th:href="@{'/order/customer/edit/' + ${item.group.orderId}}" class="btn btn-outline-info"><i
+                                    class="fa-solid fa-info"></i></a>
+                            </td> 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+         </div> 
+        <hr>
+    </div>
+
+</body>
+
+</html>

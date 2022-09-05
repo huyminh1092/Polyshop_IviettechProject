@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+
+</head>
+<body>
+	<div th:fragment="header">
+		<div class="col-10 offset-1">
+			<div class="row no-gutters" style="align-items: center;">
+				<div class="col-1 header-img text-center">
+					<img src="/polyshop/images/logo.png" width="70px"> <br>
+					<h5 style="color: #fff; font-weight: 600;">PolyShop</h5>
+				</div>
+				<div class="col-5 header-search offset-1">
+					<form th:action="@{/search}" class="form-inline"
+						style="width: 100%;">
+						<input type="text" class="form-control" name="keyword"
+							placeholder="Nhập tên điện thoại,máy tính ... cần tìm">
+						<button class="btn btn-dark">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</form>
+				</div>
+				<div class="col-3 offset-2 header-info">
+					<div class="row no-gutters"
+						style="align-items: center; justify-content: space-evenly; width: 380px;">
+						<span th:if="${session.checkLogin != null}"> <span
+							class="username nav-link dropdown-toggle" id="profile"
+							role="button" data-toggle="dropdown" aria-expanded="false">
+								Welcome: <span>[[${session.nameLogin}]]</span>
+						</span>
+							<div class="dropdown-menu" aria-labelledby="profile">
+								<a class="dropdown-item dropdown-item-profile"
+									th:href="@{/change}">Đổi mật khẩu</a> <a
+									class="dropdown-item dropdown-item-profile"
+									th:href="@{/profile}">Cập nhập thông tin</a>
+									 <a class="dropdown-item dropdown-item-profile" 
+									 th:href="@{/order/customer}">Đơn hàng của bạn</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item dropdown-item-profile"
+									th:href="@{/logout}">Đăng xuất</a>
+							</div>
+						</span> <span th:if="${session.checkLogin == null}"> <a
+							th:href="@{/register}" class="mr-4"> Đăng ký </a> <a
+							th:href="@{/login}" class="mr-4"> Đăng nhập </a>
+						</span> 
+						 <a th:href="@{/cart}"> <i
+							class="fa-solid fa-cart-shopping mr-1"></i> Giỏ hàng
+						</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

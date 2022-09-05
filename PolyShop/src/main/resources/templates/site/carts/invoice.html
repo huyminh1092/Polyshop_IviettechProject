@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{site/dashboardLayoutSite.html}">
+
+<head>
+</head>
+
+<body>
+   
+    <div class="invoice" layout:fragment="content">
+        <div class="col-8 offset-2">
+            <div class="mb-4">
+                <a class="home-page-link" href="">Trang chủ</a> / 
+                <a class="extra-page-link" href="">Đơn hàng</a>
+            </div>
+            <h2 class="text-center">Đơn Hàng Của Bạn</h2>
+    
+            <div class="info-invoice mt-5">
+                <div class="text-left">
+                    <h5>Thông tin khách hàng</h5>
+                    <span>Mã hóa đơn: </span>[[${inforOrder.orderId}]] <br>
+                    <span>Ngày mua hàng: </span>[[${#dates.format(inforOrder.orderDate,'dd-MM-yyyy')}]]
+                </div>
+                <div class="text-right">
+                    <h5>Khách hàng</h5>
+                    <span>Họ tên: </span>[[${inforOrder.name}]] <br>
+                 <span>Address: </span>[[${inforOrder.address.district}]] 
+                </div>
+            </div>
+            <table class="table table-bordered table-striped mt-5">
+                <thead>
+                    <tr>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá tiền</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr th:each="item : ${cartItemsInvoice}">
+                            <td style="width: 200px;">
+                                <img th:src="@{${'/upload/' + item.image}}" alt="" width="50%">
+                            </td>
+                            <td>[[${item.name}]]</td>
+                            <td>[[${item.quantity}]]</td>
+                            <td>[[${#numbers.formatDecimal(item.unitPrice, 0, 'POINT', 0, 'POINT')}]] 
+                                <span class="vnd">Ä‘</span> </td>
+                            <td>[[${#numbers.formatDecimal(item.intoMoney, 0, 'POINT', 0, 'POINT')}]] <span class="vnd"> Đ</span></td>
+                        </tr>
+                </tbody>
+            </table>
+            <div class="row no-gutters info-wrap">
+                <div class="col-5 info">
+                    <div class="row no-gutters" style="justify-content: space-between;">
+                        <h6>Tổng tiền : </h6>
+                        <p>[[${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'POINT')}]] 
+                            <span class="vnd">Ä‘</span></p>
+                    </div>
+                    <div class="row no-gutters" style="justify-content: space-between;">
+                        <h6>Phí : </h6>
+                        <p>0%</p>
+                    </div>
+                    <div class="row no-gutters" style="justify-content: space-between;">
+                        <h5>Tổng tiền thanh toán : </h5>
+                        <p style="font-size: 20px; color: #cd1817;">[[${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'POINT')}]] 
+                            <span class="vnd">Ä‘</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+</body>
+
+</html>
